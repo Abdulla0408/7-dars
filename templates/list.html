@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="vs-product-wrapper space-top space-md-bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="section-title">
+                    <h2 class="title">Mahsulotlarimiz</h2>
+                    <p class="text">Bizning mahsulotlar ro'yxati bilan tanishing</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for product in products %}
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="vs-product-box shadow-sm rounded">
+        <div class="product-img">
+            {% if product.product.category.imges %}
+                <img src="{{ product.product.category.imges.url }}" alt="{{ product.product.name }}" class="img-fluid">
+            {% else %}
+                <img src="{% static 'assets/img/product/product-placeholder.jpg' %}" alt="Product Image" class="img-fluid">
+            {% endif %}
+        </div>
+        <div class="product-content p-4">
+            <h3 class="product-title mb-3">{{ product.product.name }}</h3>
+            <span class="product-price d-block mb-3 text-success">${{ product.product.price }}</span>
+            <p class="product-text mb-3">{{ product.product.description|truncatewords:20 }}</p>
+            <div class="actions">
+                {% if product.id %}
+                    <a href="{% url 'update_product_enter' pk=product.pk %}" class="vs-btn btn-sm me-2">Tahrirlash</a>
+                    <a href="{% url 'delete_product_enter' pk=product.pk %}" class="vs-btn btn-sm btn-outline-danger">O'chirish</a>
+                {% else %}
+                    <p class="text-danger">No ID available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="col-12 text-center">
+    <p class="alert alert-info">Hozircha mahsulotlar mavjud emas.</p>
+</div>
+{% endfor %}
+
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'create_product_enter' %}" class="vs-btn">Yangi mahsulot qo'shish</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
